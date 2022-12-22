@@ -18,7 +18,7 @@ public:
 	int x_start;
 	int x_eind;
 
-	line_t(int a, int b, bool c = false) : x_start(a), x_eind(b) {}
+	line_t(int a, int b) : x_start(a), x_eind(b) {}
 
 	bool isEmpty() {
 		return x_eind < x_start;
