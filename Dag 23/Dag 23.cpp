@@ -105,7 +105,6 @@ void show_elfs() {
 	cout << m << endl;
 }
 
-
 int main() {
 	ifstream input("C:\\Users\\Jan\\Desktop\\input.txt");
 	if (!input) {
@@ -158,10 +157,5 @@ int main() {
 		if (e.y > max_y)
 			max_y = e.y;
 	}
-
-	//cout << (max_x - min_x + 1)*(max_y - min_y + 1) - all_elfs.size() << endl;
-	cout << min_x << ", " << max_x << endl;
-	cout << min_y << ", " << max_y << endl;
-
-
+	cout << (max_x - min_x + 1)*(max_y - min_y + 1) - all_elfs.size() << endl;
 }
