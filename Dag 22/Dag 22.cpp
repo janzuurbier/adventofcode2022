@@ -82,8 +82,8 @@ void turn_left() {
 	kaart[y][x] = dir_char;
 }
 
-//for aoc22
-void lees_kaart(istream& is, matrix<char, N, M>& k) {
+
+void read_map(istream& is, matrix<char, N, M>& k) {
 	string line;
 	for (int i = 0; i < N; i++) {
 		getline(is, line);
@@ -102,7 +102,7 @@ int main()
 		return 1;
 	}
 	ofstream output("C:\\Users\\Jan\\Desktop\\output.txt");
-	lees_kaart(input, kaart);
+	read_map(input, kaart);
 	advance();
 
 	string line;

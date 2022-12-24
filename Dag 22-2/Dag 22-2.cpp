@@ -26,6 +26,7 @@ char get_dir_char() {
 	}
 }
 
+// 6 faces, faces[0] is not being used
 matrix<char, K, K> faces[7] = { matrix<char, K, K>(' '),
 								matrix<char, K, K>(' '),
 								matrix<char, K, K>(' '),
@@ -34,6 +35,7 @@ matrix<char, K, K> faces[7] = { matrix<char, K, K>(' '),
 								matrix<char, K, K>(' '),
 								matrix<char, K, K>(' ') };
 
+//transition from one face to the other.
 void to_new_face(int& f , int& x, int& y, direction_t& dir) {
 	switch (f) {
 	case 1:
@@ -135,15 +137,15 @@ void turn_right() {
 
 void turn_left() {
 	switch (dir) {
-	case RIGHT: dir = UP; dir_char = '^'; break;
-	case DOWN: dir = RIGHT; dir_char = '>'; break;
-	case LEFT: dir = DOWN; dir_char = 'v'; break;
-	case UP: dir = LEFT; dir_char = '<'; break;
+	case RIGHT: dir = UP;  break;
+	case DOWN: dir = RIGHT;  break;
+	case LEFT: dir = DOWN;  break;
+	case UP: dir = LEFT;  break;
 	}
-	kaart[y][x] = dir_char;
+	kaart[y][x] = get_dir_char();
 }
 
-void lees_kaart(istream& is, matrix<char, N, M>& k) {
+void read_map(istream& is, matrix<char, N, M>& k) {
 	string line;
 	for (int i = 0; i < N; i++) {
 		getline(is, line);
@@ -153,7 +155,6 @@ void lees_kaart(istream& is, matrix<char, N, M>& k) {
 	}
 }
 
-
 int main()
 {
 	ifstream input("C:\\Users\\Jan\\Desktop\\input.txt");
@@ -162,12 +163,13 @@ int main()
 		return 1;
 	}
 
-	lees_kaart(input, kaart);
-	kaart[0][2 * K] = dir_char;
+	read_map(input, kaart);
+	kaart[0][2 * K] = get_dir_char();
 	string line;
 	getline(input, line);
 	getline(input, line);
 
+	//copy '.' end '#' from the big map to te separate faces.
 	for (int i = 0; i < K; i++)
 		for (int j = 0; j < K; j++)
 			faces[1][i][j] = kaart[i][j + K];
@@ -202,6 +204,7 @@ int main()
 		for (int i = 0; i < steps; i++)advance();
 	}
 
+	//copy back
 	for (int i = 0; i < K; i++)
 		for (int j = 0; j < K; j++)
 			kaart[i][j + K] = faces[1][i][j];
