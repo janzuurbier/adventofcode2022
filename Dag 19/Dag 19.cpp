@@ -21,18 +21,17 @@ int get_max(int ore, int clay, int obs, int geode, int nrorr, int nrclr, int nro
 	string s;
 	if (minute_left == 0) return geode;
 	if (minute_left == 1) return geode + nrgr;
-	if (ore >= bp.geo_robot_ore && obs >= bp.geo_robot_obs) {
-		int n = get_max(ore - bp.obs_robot_ore + nrorr, clay + nrclr, obs - bp.geo_robot_obs + nrobr, geode + nrgr, nrorr, nrclr, nrobr, nrgr + 1, minute_left - 1);
-		return n;
+	if (minute_left == 2 && ore >= bp.geo_robot_ore && obs >= bp.geo_robot_obs) {
+		return geode + 2 * nrgr + 1;
 	}
 	if (minute_left == 2) return geode + 2 * nrgr;
 	int max = geode + minute_left * nrgr;
 	//next robot is geode robot
-	if (!(ore < bp.geo_robot_ore && nrorr == 0) && !(obs < bp.geo_robot_obs && nrobr == 0)) {
+	if ( nrobr != 0) {
 		int k1;
 		if (ore >= bp.geo_robot_ore)
 			k1 = 0;
-		else if (ore < bp.geo_robot_ore && nrorr > 0) {
+		else if (ore < bp.geo_robot_ore ) {
 			int r1 = (bp.geo_robot_ore - ore) % nrorr;
 			int d1 = (bp.geo_robot_ore - ore) / nrorr;
 			k1 = r1 == 0 ? d1 : d1 + 1;
@@ -40,7 +39,7 @@ int get_max(int ore, int clay, int obs, int geode, int nrorr, int nrclr, int nro
 		int k2;
 		if (obs >= bp.geo_robot_obs)
 			k2 = 0;
-		if (obs < bp.geo_robot_obs && nrobr > 0) {
+		if (obs < bp.geo_robot_obs ) {
 			int r2 = (bp.geo_robot_obs - obs) % nrobr;
 			int d2 = (bp.geo_robot_obs - obs) / nrobr;
 			k2 = r2 == 0 ? d2 : d2 + 1;
@@ -55,11 +54,11 @@ int get_max(int ore, int clay, int obs, int geode, int nrorr, int nrclr, int nro
 		}
 	}
 	//next robort is obsidian robot
-	if (!(ore < bp.obs_robot_ore && nrorr == 0) && !(clay < bp.obs_robot_clay && nrclr == 0)) {
+	if ( nrclr != 0) {
 		int k1;
 		if (ore >= bp.obs_robot_ore)
 			k1 = 0;
-		if (ore < bp.obs_robot_ore && nrorr > 0) {
+		if (ore < bp.obs_robot_ore ) {
 			int r1 = (bp.obs_robot_ore - ore) % nrorr;
 			int d1 = (bp.obs_robot_ore - ore) / nrorr;
 			k1 = r1 == 0 ? d1 : d1 + 1;
@@ -67,7 +66,7 @@ int get_max(int ore, int clay, int obs, int geode, int nrorr, int nrclr, int nro
 		int k2;
 		if (clay >= bp.obs_robot_clay)
 			k2 = 0;
-		if (clay < bp.obs_robot_clay && nrclr > 0) {
+		if (clay < bp.obs_robot_clay ) {
 			int r2 = (bp.obs_robot_clay - clay) % nrclr;
 			int d2 = (bp.obs_robot_clay - clay) / nrclr;
 			k2 = r2 == 0 ? d2 : d2 + 1;
@@ -90,7 +89,7 @@ int get_max(int ore, int clay, int obs, int geode, int nrorr, int nrclr, int nro
 			max = n;
 		}
 	}
-	else if (nrorr > 0) {
+	else  {
 		int r = (bp.clay_robot_ore - ore) % nrorr;
 		int d = (bp.clay_robot_ore - ore) / nrorr;
 		int k = r == 0 ? d : d + 1;
@@ -109,7 +108,7 @@ int get_max(int ore, int clay, int obs, int geode, int nrorr, int nrclr, int nro
 			max = n;
 		}
 	}
-	else if (nrorr > 0) {
+	else {
 		int r = (bp.ore_robot_ore - ore) % nrorr;
 		int d = (bp.ore_robot_ore - ore) / nrorr;
 		int k = r == 0 ? d : d + 1;
@@ -119,34 +118,10 @@ int get_max(int ore, int clay, int obs, int geode, int nrorr, int nrclr, int nro
 			if (n > max) {
 				max = n;
 			}
-
 		}
 	}
 	return max;
 }
-
-
-/*int get_max(int ore, int clay, int obs, int geode, int nrorr, int nrclr, int nrobr, int nrgr, int minute_left) {
-	if (minute_left == 0) return geode;
-	int max = get_max(ore + nrorr, clay + nrclr, obs + nrobr, geode + nrgr, nrorr, nrclr, nrobr, nrgr, minute_left - 1);;
-	if (ore >= bp.ore_robot_ore) {
-		int n = get_max(ore - bp.ore_robot_ore + nrorr, clay + nrclr, obs + nrobr, geode + nrgr, nrorr + 1, nrclr, nrobr, nrgr, minute_left - 1);
-		if (n > max) max = n;
-	}
-	if (ore >= bp.clay_robot_ore) {
-		int n = get_max(ore - bp.clay_robot_ore + nrorr, clay + nrclr, obs + nrobr, geode + nrgr, nrorr, nrclr + 1, nrobr, nrgr, minute_left - 1);
-		if (n > max) max = n;
-	}
-	if (ore >= bp.obs_robot_ore && clay >= bp.obs_robot_clay) {
-		int n = get_max(ore - bp.obs_robot_ore + nrorr, clay - bp.obs_robot_clay + nrclr, obs + nrobr, geode + nrgr, nrorr, nrclr, nrobr + 1, nrgr, minute_left - 1);
-		if (n > max) max = n;
-	}
-	if (ore >= bp.geo_robot_ore && obs >= bp.geo_robot_obs) {
-		int n = get_max(ore - bp.obs_robot_ore + nrorr, clay + nrclr, obs - bp.geo_robot_obs + nrobr, geode + nrgr, nrorr, nrclr, nrobr, nrgr + 1, minute_left - 1);
-		if (n > max) max = n;
-	}
-	return max;
-}*/
 
 int main()
 {
@@ -180,6 +155,4 @@ int main()
 		sum += nr_of_blueprint * nr_of_geodes;
 	}
 	cout << sum << endl;
-
-	
 }
